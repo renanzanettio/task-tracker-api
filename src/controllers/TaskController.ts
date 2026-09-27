@@ -58,9 +58,9 @@ export class TaskController {
       }
 
       if (!deadline || isNaN(Date.parse(deadline))) {
-        return res
-          .status(400)
-          .json({ erro: 'O campo deadline é obrigatório e deve ser uma data valida.' });
+        return res.status(400).json({
+          erro: 'O campo deadline é obrigatório e deve ser uma data valida.',
+        });
       }
 
       const novaTask = await Task.create({

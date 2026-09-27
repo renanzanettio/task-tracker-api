@@ -6,6 +6,9 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
+// Numero de tentativas e intervalo entre elas, usados para aguardar o banco
+// de dados subir (util principalmente na primeira vez que o container do
+// Postgres é criado, quando a inicializacao do banco demora alguns segundos)
 const MAX_TENTATIVAS = 10;
 const INTERVALO_MS = 3000;
 
@@ -21,9 +24,9 @@ async function conectarComRetry() {
       return;
     } catch (error) {
       console.log(
-        `Tentativa ${tentativa}/${MAX_TENTATIVAS} de conexão com o banco falhou. Tentando novamente em ${
-          INTERVALO_MS / 1000
-        }s...`,
+        `Tentativa ${tentativa}/${MAX_TENTATIVAS} de conexão com o banco falhou (${
+          (error as Error).message
+        }). Tentando novamente em ${INTERVALO_MS / 1000}s...`,
       );
       await delay(INTERVALO_MS);
     }

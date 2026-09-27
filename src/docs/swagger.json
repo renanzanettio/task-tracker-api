@@ -201,10 +201,20 @@
       "UpdateTaskDTO": {
         "type": "object",
         "properties": {
-          "nome": { "type": "string", "example": "Implementar tela de login (revisada)" },
-          "descricao": { "type": "string", "example": "Descricao atualizada da tarefa" },
+          "nome": {
+            "type": "string",
+            "example": "Implementar tela de login (revisada)"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Descricao atualizada da tarefa"
+          },
           "estimativa_tempo": { "type": "integer", "example": 10 },
-          "deadline": { "type": "string", "format": "date", "example": "2026-10-20" }
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-20"
+          }
         }
       }
     }

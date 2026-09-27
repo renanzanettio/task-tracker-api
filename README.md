@@ -2,7 +2,7 @@
 
 API RESTful para gestão de tarefas e projetos (Task Tracker), desenvolvida com Node.js, Express, TypeScript, Sequelize (PostgreSQL) e documentação interativa via Swagger.
 
-Trabalho prático individual (AT1) da disciplina Laboratório de Desenvolvimento Web (LDW).
+Trabalho prático individual (AT1) das disciplinas Laboratório de Desenvolvimento Web (LDW) e Integração e Entrega Contínua (IEC — Opção A: reaproveitamento do projeto de LDW).
 
 ## Tema
 
@@ -15,6 +15,9 @@ Gestão de Tarefas e Projetos (Task Tracker): cadastro de tarefas com nome, desc
 - Sequelize ORM + PostgreSQL
 - Swagger (swagger-ui-express)
 - Docker / Docker Compose
+- ESLint + Prettier
+- Husky (git hooks)
+- GitHub Actions (CI)
 
 ## Estrutura do projeto
 
@@ -102,3 +105,27 @@ npm run dev
 | deadline          | date    | sim         | Data limite para conclusão (AAAA-MM-DD) |
 
 Exemplos de requisições prontas estão em `requests/requests.http`.
+
+## Qualidade de código
+
+O projeto usa ESLint para padronização e Prettier para formatação:
+
+```bash
+npm run lint          # analisa o código com ESLint
+npm run lint:fix       # corrige automaticamente o que for possível
+npm run format:check   # verifica a formatação com Prettier
+npm run format:fix     # formata o código automaticamente
+npm run type-check     # checagem estrita de tipos (tsc --noEmit)
+```
+
+## Git Hooks (Husky)
+
+Ao rodar `npm install`, o Husky é instalado automaticamente (script `prepare`) e configura o hook de `pre-commit`, que roda `lint`, `format:check` e `type-check` antes de cada commit. Se algum desses passos falhar, o commit é bloqueado até a correção.
+
+## Integração Contínua (GitHub Actions)
+
+O workflow em `.github/workflows/ci.yml` roda automaticamente a cada `push` ou Pull Request para a branch `main` (ou manualmente pela aba *Actions*), executando em dois jobs encadeados:
+
+1. **Qualidade e Checagem de Tipos**: instala dependências, roda `lint`, `format:check` e `type-check`.
+2. **Build e Imagem Docker** (só roda se o job 1 passar): compila o projeto (`build`) e valida a construção da imagem Docker da API.
+
