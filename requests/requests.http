@@ -1,0 +1,31 @@
+### Health Check
+GET http://localhost:3000/api/health
+
+### Listar Tarefas
+GET http://localhost:3000/api/tasks
+
+### Criar Tarefa
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+    "nome": "Implementar tela de login",
+    "descricao": "Criar o formulario de autenticacao com validacao de campos",
+    "estimativa_tempo": 8,
+    "deadline": "2026-10-15"
+}
+
+### Buscar Tarefa por ID
+GET http://localhost:3000/api/tasks/1
+
+### Atualizar Tarefa
+PUT http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+  "nome": "Implementar tela de login (revisada)",
+  "estimativa_tempo": 10
+}
+
+### Excluir Tarefa
+DELETE http://localhost:3000/api/tasks/1

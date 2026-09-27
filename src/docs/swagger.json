@@ -1,0 +1,212 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Tracker API",
+    "version": "1.0.0",
+    "description": "Documentacao interativa da API REST para gestao de tarefas e projetos (Task Tracker)"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Servidor Local de Desenvolvimento"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Tasks",
+      "description": "Operacoes de gerenciamento de tarefas"
+    }
+  ],
+  "paths": {
+    "/tasks": {
+      "get": {
+        "summary": "Listar todas as tarefas",
+        "description": "Retorna a lista completa de tarefas cadastradas.",
+        "tags": ["Tasks"],
+        "responses": {
+          "200": {
+            "description": "Lista de tarefas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Task" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Erro interno do servidor" }
+        }
+      },
+      "post": {
+        "summary": "Cadastrar nova tarefa",
+        "description": "Cria uma nova tarefa a partir dos dados informados no corpo da requisicao.",
+        "tags": ["Tasks"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTaskDTO" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tarefa criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Task" }
+              }
+            }
+          },
+          "400": { "description": "Dados invalidos ou campos ausentes" },
+          "500": { "description": "Erro interno do servidor" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Buscar tarefa por ID",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID da tarefa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa encontrada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Task" }
+              }
+            }
+          },
+          "400": { "description": "ID invalido" },
+          "404": { "description": "Tarefa nao encontrada" },
+          "500": { "description": "Erro interno do servidor" }
+        }
+      },
+      "put": {
+        "summary": "Atualizar dados de uma tarefa",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID da tarefa"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateTaskDTO" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tarefa atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Task" }
+              }
+            }
+          },
+          "400": { "description": "Dados invalidos" },
+          "404": { "description": "Tarefa nao encontrada" },
+          "500": { "description": "Erro interno do servidor" }
+        }
+      },
+      "delete": {
+        "summary": "Remover tarefa por ID",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID da tarefa"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Tarefa removida com sucesso" },
+          "400": { "description": "ID invalido" },
+          "404": { "description": "Tarefa nao encontrada" },
+          "500": { "description": "Erro interno do servidor" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "nome": { "type": "string", "example": "Implementar tela de login" },
+          "descricao": {
+            "type": "string",
+            "example": "Criar o formulario de autenticacao com validacao de campos"
+          },
+          "estimativa_tempo": {
+            "type": "integer",
+            "description": "Estimativa de tempo em horas",
+            "example": 8
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-15"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2026-09-27T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2026-09-27T10:00:00.000Z"
+          }
+        }
+      },
+      "CreateTaskDTO": {
+        "type": "object",
+        "required": ["nome", "estimativa_tempo", "deadline"],
+        "properties": {
+          "nome": { "type": "string", "example": "Implementar tela de login" },
+          "descricao": {
+            "type": "string",
+            "example": "Criar o formulario de autenticacao com validacao de campos"
+          },
+          "estimativa_tempo": {
+            "type": "integer",
+            "description": "Estimativa de tempo em horas",
+            "example": 8
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-10-15"
+          }
+        }
+      },
+      "UpdateTaskDTO": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string", "example": "Implementar tela de login (revisada)" },
+          "descricao": { "type": "string", "example": "Descricao atualizada da tarefa" },
+          "estimativa_tempo": { "type": "integer", "example": 10 },
+          "deadline": { "type": "string", "format": "date", "example": "2026-10-20" }
+        }
+      }
+    }
+  }
+}
